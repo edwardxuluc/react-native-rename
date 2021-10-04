@@ -62,6 +62,8 @@ module.exports = async () => {
             return;
         }
 
+        flags.package_id = getPackageId(flags.package);
+
         let folder = findFolder('android/app/src/main/java/com');
         if (folder) {
 
@@ -74,7 +76,12 @@ module.exports = async () => {
                 {
                     path: `package.json`,
                     search: constants.DEFAULT_PACKAGE_ID,
-                    replace: getPackageId(flags.package),
+                    replace: flags.package_id,
+                },
+                {
+                    path: `android/settings.gradle`,
+                    search: constants.DEFAULT_PACKAGE_ID,
+                    replace: flags.package_id,
                 },
                 {
                     path: 'android/app/BUCK',
@@ -97,9 +104,19 @@ module.exports = async () => {
                     replace: flags.package,
                 },
                 {
+                    path: `android/app/src/main/java/com/${folder}/MainActivity.java`,
+                    search: constants.DEFAULT_PACKAGE_ID,
+                    replace: flags.package_id,
+                },
+                {
                     path: `android/app/src/main/java/com/${folder}/MainApplication.java`,
                     search: constants.DEFAULT_PACKAGE,
                     replace: flags.package,
+                },
+                {
+                    path: `android/app/src/main/java/com/${folder}/MainApplication.java`,
+                    search: constants.DEFAULT_PACKAGE_ID,
+                    replace: flags.package_id,
                 },
                 {
                     path: `android/app/src/main/res/values/strings.xml`,
